@@ -1,5 +1,5 @@
 const express = require('express');
-const twilio = require('twilio');
+const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const app = express();
 
 app.get('/', function (request, response) {
