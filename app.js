@@ -7,6 +7,7 @@ app.get('/', function (request, response) {
 });
 
 app.post('/voice', function (request, response) {
+    const twiml = new VoiceResponse();
     const gather = twiml.gather({numDigits: 4, action: '/gather'});
 
     gatherNode.say({voice: 'alice'}, 'Welcome to your Live interview, please enter the four digits code.');
