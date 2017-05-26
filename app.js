@@ -1,6 +1,10 @@
 const express = require('express');
+const parser = require('body-parser')
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const app = express();
+
+app.use(parser.urlencoded({extended: false}));
+app.use(parser.json());
 
 app.get('/', function (request, response) {
     response.send('It is working!')

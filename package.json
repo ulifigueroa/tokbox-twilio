@@ -4,6 +4,7 @@
   "description": "Connecting Tokbox using SIP Interconnect with Twilio SIP Trunk",
   "main": "app.js",
   "dependencies": {
+    "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "twilio": "^3.3.0"
   },
