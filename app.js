@@ -1,4 +1,5 @@
 const express = require('express');
+const twilio = require('twilio');
 const app = express();
 
 app.get('/', function (request, response) {
@@ -6,8 +7,10 @@ app.get('/', function (request, response) {
 });
 
 app.post('/handler', function (request, response) {
-    console.log('request', request);
-    response.send('It is working!')
+    let twiml = new twilio.TwimlResponse();
+    twiml.say('Welcome to your Live interview, please enter the code.', { voice: 'alice' });
+    response.type('text/xml');
+    response.send(twiml.toString());
 });
 
 app.listen(process.env.PORT || 3000, function () {
