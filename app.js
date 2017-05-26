@@ -7,11 +7,17 @@ app.get('/', function (request, response) {
 });
 
 app.post('/handler', function (request, response) {
-    // Use the Twilio Node.js SDK to build an XML response
     const twiml = new VoiceResponse();
-    twiml.say({voice: 'alice'}, 'Welcome to your Live interview, please enter the code.');
+    const gatherNode = twiml.gather({numDigits: 4});
 
-    // Render the response as XML in reply to the webhook request
+    if (request.body.Digits) {
+        twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
+        twiml.play({}, 'https://demo.twilio.com/docs/classic.mp3');
+    } else {
+        gatherNode.say({voice: 'alice'}, 'Welcome to your Live interview, please enter the four digits code.');
+        twiml.redirect('/handler');
+    }
+
     response.type('text/xml');
     response.send(twiml.toString());
 });
