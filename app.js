@@ -10,7 +10,7 @@ app.post('/handler', function (request, response) {
     const twiml = new VoiceResponse();
     const gatherNode = twiml.gather({numDigits: 4, action: '/handler'});
 
-    console.log('Digits', request.body.Digits);
+    console.log('Digits', request.body);
 
     if (request.body && request.body.Digits) {
         twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
