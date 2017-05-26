@@ -10,7 +10,7 @@ app.post('/voice', function (request, response) {
     const twiml = new VoiceResponse();
     const gather = twiml.gather({numDigits: 4, action: '/gather'});
 
-    gatherNode.say({voice: 'alice'}, 'Welcome to your Live interview, please enter the four digits code.');
+    gather.say({voice: 'alice'}, 'Welcome to your Live interview, please enter the four digits code.');
     twiml.redirect('/voice');
 
     response.type('text/xml');
