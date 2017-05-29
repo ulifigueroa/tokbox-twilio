@@ -15,6 +15,7 @@ app.get('/', function (request, response) {
 });
 
 app.post('/sip', function (request, response) {
+    console.log('Queue');
     twiml.dial().queue({workflowSid: process.env.OPENTOK_SESSION_ID});
 
     response.type('text/xml');
@@ -33,9 +34,10 @@ app.post('/pstn', function (request, response) {
 
 app.post('/gather', function (request, response) {
     if (request.body.Digits) {
-        console.log('Call Twilio');
         wepow.callTwilio();
         twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
+
+        console.log('enqueue');
         twiml.enqueue({
             workflowSid: process.env.OPENTOK_SESSION_ID,
             waitUrl: 'https://demo.twilio.com/docs/classic.mp3'
