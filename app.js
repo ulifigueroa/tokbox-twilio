@@ -65,7 +65,7 @@ app.post('/gather', function (request, response) {
             }
         };
 
-        request(options, function (error, response, body) {
+        request.post(options, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 // Print out the response body
                 console.log(body);
