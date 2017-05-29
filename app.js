@@ -71,7 +71,7 @@ app.post('/gather', function (request, response) {
             if (!error && response.statusCode == 200) {
                 console.log('Sucess:', body);
             } else {
-                console.log('There was an error.');
+                console.log('There was an error.', error);
             }
         });
     } else {
