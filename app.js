@@ -46,32 +46,31 @@ app.post('/gather', function (request, response) {
                     exp: Date.now() + (60 * 1000),
                     jti: 'jwt_nonce'
                 }
+            },
+            formData: {
+                sessionId: process.env.OPENTOK_SESSION_ID,
+                token: token,
+                sip: {
+                    uri: 'sip:test@wepow-live.sip.twilio.com',
+                    headers: {
+                      'headerKey': 'headerValue'
+                    },
+                    auth: {
+                      'username': 'username',
+                      'password': 'password'
+                    },
+                    secure: false
+                }
             }
         };
 
-        var body = {
-            sessionId: process.env.OPENTOK_SESSION_ID,
-            token: token,
-            sip: {
-                uri: 'sip:test@wepow-live.sip.twilio.com',
-                headers: {
-                  'headerKey': 'headerValue'
-                },
-                auth: {
-                  'username': 'username',
-                  'password': 'password'
-                },
-                secure: false
-            }
-        };
-
-        console.log('Requesting');
+        console.log('Requesting: ', options);
 
         requestClient.post(options, function (error, response, body) {
             if (!error && response.statusCode == 200) {
-                console.log('Sucess:', body);
+                console.log('Sucess: ', response, body);
             } else {
-                console.log('There was an error.', error);
+                console.log('Error: ', error, response, body);
             }
         });
     } else {
