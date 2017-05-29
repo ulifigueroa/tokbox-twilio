@@ -22,27 +22,22 @@ app.post('/pstn', function (request, response) {
     var gather = twiml.gather({numDigits: 4, action: '/gather'});
 
     gather.say({voice: 'alice'}, 'Welcome to your Live interview, please enter the four digits code.');
-    twiml.redirect('/voice');
+    twiml.redirect('/pstn');
 
     response.type('text/xml');
     response.send(twiml.toString());
 });
 
-app.post('/enqueue', function (request, response) {
-    twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
-
-    twiml.enqueue({
-        workflowSid: process.env.OPENTOK_SESSION_ID,
-        waitUrl: 'https://demo.twilio.com/docs/classic.mp3'
-    });
-});
-
 app.post('/gather', function (request, response) {
     if (request.body.Digits) {
         wepow.callTwilio();
-        twiml.redirect('/enqueue');
+        twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
+        twiml.enqueue({
+            workflowSid: process.env.OPENTOK_SESSION_ID,
+            waitUrl: 'https://demo.twilio.com/docs/classic.mp3'
+        });
     } else {
-        twiml.redirect('/voice');
+        twiml.redirect('/pstn');
     }
 
     response.type('text/xml');
