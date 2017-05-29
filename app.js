@@ -15,7 +15,6 @@ app.get('/', function (request, response) {
 });
 
 app.post('/sip', function (request, response) {
-    console.log('Queue');
     twiml.dial().queue({workflowSid: process.env.OPENTOK_SESSION_ID});
 
     response.type('text/xml');
@@ -34,18 +33,21 @@ app.post('/pstn', function (request, response) {
 
 app.post('/gather', function (request, response) {
     if (request.body.Digits) {
-        wepow.callTwilio();
         twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
-
-        console.log('enqueue');
-        twiml.enqueue({
-            workflowSid: process.env.OPENTOK_SESSION_ID,
-            waitUrl: 'https://demo.twilio.com/docs/classic.mp3'
-        });
+        wepow.callTwilio();
     } else {
-        console.log('Redirect PSTN');
         twiml.redirect('/pstn');
     }
+
+    response.type('text/xml');
+    response.send(twiml.toString());
+});
+
+app.post('/enqueue', function (request, response) {
+    twiml.enqueue({
+        workflowSid: process.env.OPENTOK_SESSION_ID,
+        waitUrl: 'https://demo.twilio.com/docs/classic.mp3'
+    });
 
     response.type('text/xml');
     response.send(twiml.toString());
@@ -65,7 +67,7 @@ wepow.callTwilio = function() {
             console.error(err);
         }
 
-        console.dir(sipCall);
+        twiml.redirect('/enqueue');
     });
 };
 
