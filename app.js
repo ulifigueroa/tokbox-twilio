@@ -1,6 +1,6 @@
 var express = require('express');
 var parser = require('body-parser');
-var request = require('request');
+var requestClient = require('request');
 var app = express();
 
 var OpenTok = require('opentok');
@@ -65,7 +65,7 @@ app.post('/gather', function (request, response) {
             }
         };
 
-        request.post(options, function (error, response, body) {
+        requestClient.post(options, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 // Print out the response body
                 console.log(body);
