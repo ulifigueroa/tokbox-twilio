@@ -5,6 +5,7 @@ var app = express();
 var OpenTok = require('opentok');
 var opentok = new OpenTok(process.env.OPENTOK_API_KEY, process.env.OPENTOK_API_SECRET);
 var VoiceResponse = require('twilio').twiml.VoiceResponse;
+var twiml = new VoiceResponse();
 
 app.use(parser.urlencoded({extended: false}));
 app.use(parser.json());
@@ -14,11 +15,10 @@ app.get('/', function (request, response) {
 });
 
 app.post('/sip', function (request, response) {
-    console.log('SIP connection');
+    twiml.dial().queue({workflowSid: process.env.OPENTOK_SESSION_ID});
 });
 
 app.post('/pstn', function (request, response) {
-    var twiml = new VoiceResponse();
     var gather = twiml.gather({numDigits: 4, action: '/gather'});
 
     gather.say({voice: 'alice'}, 'Welcome to your Live interview, please enter the four digits code.');
@@ -28,13 +28,19 @@ app.post('/pstn', function (request, response) {
     response.send(twiml.toString());
 });
 
-app.post('/gather', function (request, response) {
-    var twiml = new VoiceResponse();
+app.post('/enqueue', function (request, response) {
+    twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
 
+    twiml.enqueue({
+        workflowSid: process.env.OPENTOK_SESSION_ID,
+        waitUrl: 'https://demo.twilio.com/docs/classic.mp3'
+    });
+});
+
+app.post('/gather', function (request, response) {
     if (request.body.Digits) {
-        twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
-        twiml.play({}, 'https://demo.twilio.com/docs/classic.mp3');
-        wepow.requestSIPCall();
+        wepow.callTwilio();
+        twiml.redirect('/enqueue');
     } else {
         twiml.redirect('/voice');
     }
@@ -43,7 +49,7 @@ app.post('/gather', function (request, response) {
     response.send(twiml.toString());
 });
 
-wepow.requestSIPCall = function() {
+wepow.callTwilio = function() {
     var token = opentok.generateToken(process.env.OPENTOK_SESSION_ID);
 
     opentok.dial(process.env.OPENTOK_SESSION_ID, token, process.env.TWILIO_SIP_URI, {
