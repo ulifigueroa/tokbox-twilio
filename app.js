@@ -64,14 +64,17 @@ app.post('/gather', function (request, response) {
             }
         };
 
-        console.log('Requesting: ', options);
+        console.log('==================================');
+        console.log('Requesting');
 
         requestClient.post(options, function (error, response, body) {
+            console.log('==================================');
             if (!error && response.statusCode == 200) {
                 console.log('Sucess: ', response, body);
             } else {
                 console.log('Error: ', error, response, body);
             }
+            console.log('==================================');
         });
     } else {
         twiml.redirect('/voice');
