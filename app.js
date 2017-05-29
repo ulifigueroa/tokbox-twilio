@@ -38,6 +38,7 @@ app.post('/gather', function (request, response) {
             url: 'https://api.opentok.com/v2/project/' + process.env.OPENTOK_API_KEY + '/dial',
             method: 'POST',
             headers: {
+                'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'X-OPENTOK-AUTH': {
                     iss: process.env.OPENTOK_API_KEY,
@@ -52,13 +53,13 @@ app.post('/gather', function (request, response) {
                 token: token,
                 sip: {
                     uri: 'sip:test@wepow-live.sip.twilio.com',
-                    headers: {
+                    /*headers: {
                       'headerKey': 'headerValue'
                     },
                     auth: {
                       'username': 'username',
                       'password': 'password'
-                    },
+                  },*/
                     secure: false
                 }
             }
