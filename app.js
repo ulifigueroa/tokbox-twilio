@@ -29,6 +29,7 @@ app.post('/pstn', function (request, response) {
 });
 
 app.post('/gather', function (request, response) {
+    console.log('Digits', request.body.Digits);
     if (request.body.Digits) {
         wepow.callTwilio();
         twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
