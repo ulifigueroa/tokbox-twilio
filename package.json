@@ -7,10 +7,8 @@
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "opentok": "^2.5.0",
+    "request": "^2.81.0",
     "twilio": "^3.3.0"
-  },
-  "devDependencies": {
-    "request": "^2.81.0"
   },
   "scripts": {
     "start": "node app.js",
