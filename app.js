@@ -47,7 +47,7 @@ app.post('/gather', function (request, response) {
                     jti: 'jwt_nonce'
                 }
             },
-            formData: {
+            body: {
                 sessionId: process.env.OPENTOK_SESSION_ID,
                 token: token,
                 sip: {
@@ -66,7 +66,7 @@ app.post('/gather', function (request, response) {
 
         console.log('Requesting: ', options);
 
-        requestClient.post(options, function (error, response, body) {
+        requestClient(options, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 console.log('Sucess: ', response, body);
             } else {
