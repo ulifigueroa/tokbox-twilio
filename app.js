@@ -65,10 +65,13 @@ app.post('/gather', function (request, response) {
             }
         };
 
+        console.log('Requesting');
+
         requestClient.post(options, function (error, response, body) {
             if (!error && response.statusCode == 200) {
-                // Print out the response body
-                console.log(body);
+                console.log('Sucess:', body);
+            } else {
+                console.log('There was an error.');
             }
         });
     } else {
