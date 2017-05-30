@@ -19,6 +19,7 @@ app.post('/sip', function (request, response) {
     twiml.dial().queue({workflowSid: 'live_interview'});
 
     console.log('SIP called received.');
+    console.log(twiml.toString());
 
     response.type('text/xml');
     response.send(twiml.toString());
@@ -32,6 +33,7 @@ app.post('/pstn', function (request, response) {
     //twiml.redirect('/pstn');
 
     console.log('PSTN called received.');
+    console.log(twiml.toString());
 
     response.type('text/xml');
     response.send(twiml.toString());
@@ -49,13 +51,17 @@ app.post('/gather', function (request, response) {
         twiml.redirect('/pstn');
     }
 
+    console.log(twiml.toString());
+
     response.type('text/xml');
     response.send(twiml.toString());
 });
 
 app.post('/wait', function (request, response) {
     twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
+
     console.log('Playing wait text.')
+    console.log(twiml.toString());
 
     response.type('text/xml');
     response.send(twiml.toString());
@@ -65,15 +71,17 @@ app.post('/enqueue', function (request, response) {
     var twiml = new VoiceResponse();
 
     twiml.enqueue({workflowSid: 'live_interview', waitUrl: '/wait'});
+
     console.log('Adding call to the queue.');
+    console.log(twiml.toString());
 
     response.type('text/xml');
     response.send(twiml.toString());
 });
 
 wepow.callTwilio = function() {
-    var token = opentok.generateToken(process.env.OPENTOK_SESSION_ID),
-        options = {
+    var token = opentok.generateToken(process.env.OPENTOK_SESSION_ID);
+    var options = {
             headers: {},
             auth: {
                 username: process.env.TWILIO_SIP_USER,
