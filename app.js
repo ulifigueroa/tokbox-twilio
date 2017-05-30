@@ -53,12 +53,18 @@ app.post('/gather', function (request, response) {
     response.send(twiml.toString());
 });
 
+app.post('/wait', function (request, response) {
+    twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
+    console.log('Playing wait text.')
+
+    response.type('text/xml');
+    response.send(twiml.toString());
+});
+
 app.post('/enqueue', function (request, response) {
     var twiml = new VoiceResponse();
 
-    twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
-    twiml.enqueue({workflowSid: 'live_interview'});
-
+    twiml.enqueue({workflowSid: 'live_interview', waitUrl: '/wait'});
     console.log('Adding call to the queue.');
 
     response.type('text/xml');
