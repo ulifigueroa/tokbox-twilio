@@ -18,9 +18,6 @@ app.post('/sip', function (request, response) {
 
     twiml.dial().queue({}, 'live_interview');
 
-    console.log('SIP called received.');
-    console.log(twiml.toString());
-
     response.type('text/xml');
     response.send(twiml.toString());
 });
@@ -30,10 +27,7 @@ app.post('/pstn', function (request, response) {
     var gather = twiml.gather({numDigits: 4, action: '/gather'});
 
     gather.say({voice: 'alice'}, 'Welcome to your Live interview, please enter the four digits code.');
-    //twiml.redirect('/pstn');
-
-    console.log('PSTN called received.');
-    console.log(twiml.toString());
+    twiml.redirect('/pstn');
 
     response.type('text/xml');
     response.send(twiml.toString());
@@ -42,8 +36,6 @@ app.post('/pstn', function (request, response) {
 app.post('/gather', function (request, response) {
     var twiml = new VoiceResponse();
 
-    console.log('Asking for the Live code.');
-
     if (request.body.Digits) {
         wepow.callTwilio();
         twiml.redirect('/enqueue');
@@ -51,18 +43,15 @@ app.post('/gather', function (request, response) {
         twiml.redirect('/pstn');
     }
 
-    console.log(twiml.toString());
-
     response.type('text/xml');
     response.send(twiml.toString());
 });
 
 app.post('/wait', function (request, response) {
     var twiml = new VoiceResponse();
-    twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
 
-    console.log('Playing wait text.')
-    console.log(twiml.toString());
+    twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
+    twiml.play('https://demo.twilio.com/docs/classic.mp3');
 
     response.type('text/xml');
     response.send(twiml.toString());
@@ -71,10 +60,7 @@ app.post('/wait', function (request, response) {
 app.post('/enqueue', function (request, response) {
     var twiml = new VoiceResponse();
 
-    twiml.enqueue({waitUrl: '/wait'}, 'live_interview');
-
-    console.log('Adding call to the queue.');
-    console.log(twiml.toString());
+    twiml.enqueue({say: '/wait'}, 'live_interview');
 
     response.type('text/xml');
     response.send(twiml.toString());
