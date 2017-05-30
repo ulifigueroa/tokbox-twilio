@@ -51,11 +51,7 @@ app.post('/enqueue', function (request, response) {
     var twiml = new VoiceResponse();
 
     twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
-
-    twiml.enqueue({
-        workflowSid: process.env.OPENTOK_SESSION_ID,
-        waitUrl: 'https://demo.twilio.com/docs/classic.mp3'
-    });
+    twiml.enqueue({workflowSid: process.env.OPENTOK_SESSION_ID});
 
     response.type('text/xml');
     response.send(twiml.toString());
@@ -64,11 +60,11 @@ app.post('/enqueue', function (request, response) {
 wepow.callTwilio = function() {
     var token = opentok.generateToken(process.env.OPENTOK_SESSION_ID),
         options = {
+            headers: {},
             auth: {
                 username: process.env.TWILIO_SIP_USER,
                 password: process.env.TWILIO_SIP_PASSWORD,
-            },
-            headers: {}
+            }
         };
 
     opentok.dial(process.env.OPENTOK_SESSION_ID, token, process.env.TWILIO_SIP_URI, options, function (error, sipCall) {
