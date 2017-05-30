@@ -48,10 +48,19 @@ app.post('/gather', function (request, response) {
     response.send(twiml.toString());
 });
 
+app.post('/wait', function (request, response) {
+    var twiml = new VoiceResponse();
+
+    twiml.play({}, 'https://demo.twilio.com/docs/classic.mp3');
+
+    response.type('text/xml');
+    response.send(twiml.toString());
+});
+
 app.post('/enqueue', function (request, response) {
     var twiml = new VoiceResponse();
 
-    twiml.enqueue({waitUrl: 'https://demo.twilio.com/docs/classic.mp3'}, 'live_interview');
+    twiml.enqueue({waitUrl: '/wait'}, 'live_interview');
 
     response.type('text/xml');
     response.send(twiml.toString());
