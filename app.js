@@ -15,10 +15,15 @@ app.get('/', function (request, response) {
 
 // This handles the incoming Tokbox SIP call. What we need to do here is to
 // call to the queue to link the PSTN call and this incoming call.
+//
+// NOTE: queueName has to be unique for each live interview, we need to generate
+// a unique code less that 64 characters, we cannot use Tokbox session id since
+// it's longer than 64 chars. For testing purposes let's use just 'live_interview'.
 app.post('/sip', function (request, response) {
-    var twiml = new VoiceResponse();
+    var twiml = new VoiceResponse(),
+        queueName = 'live_interview';
 
-    twiml.dial().queue({}, 'live_interview');
+    twiml.dial().queue({}, queueName);
 
     response.type('text/xml');
     response.send(twiml.toString());
@@ -67,9 +72,10 @@ app.post('/wait', function (request, response) {
 
 // This enqueues the current PSTN call while the Tokbox SIP call is created.
 app.post('/enqueue', function (request, response) {
-    var twiml = new VoiceResponse();
+    var twiml = new VoiceResponse(),
+        queueName = 'live_interview';
 
-    twiml.enqueue({waitUrl: '/wait'}, 'live_interview');
+    twiml.enqueue({waitUrl: '/wait'}, queueName);
 
     response.type('text/xml');
     response.send(twiml.toString());
