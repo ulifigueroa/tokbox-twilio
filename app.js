@@ -16,8 +16,7 @@ app.get('/', function (request, response) {
 app.post('/sip', function (request, response) {
     var twiml = new VoiceResponse();
 
-    twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview.');
-    twiml.dial().queue({}, 'live_interview');
+    twiml.dial().queue({say: 'I\'m connecting you to the Live Interview.'}, 'live_interview');
 
     response.type('text/xml');
     response.send(twiml.toString());
