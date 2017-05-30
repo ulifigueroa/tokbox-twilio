@@ -13,15 +13,19 @@ app.get('/', function (request, response) {
     response.send('It is working!');
 });
 
+// This handles the incoming Tokbox SIP call. What we need to do here is to
+// call to the queue to link the PSTN call and this incoming call.
 app.post('/sip', function (request, response) {
     var twiml = new VoiceResponse();
 
-    twiml.dial().queue({say: 'I\'m connecting you to the Live Interview.'}, 'live_interview');
+    twiml.dial().queue({}, 'live_interview');
 
     response.type('text/xml');
     response.send(twiml.toString());
 });
 
+// This handles the incoming PSTN call,
+// and ask for the Live Interivew code.
 app.post('/pstn', function (request, response) {
     var twiml = new VoiceResponse();
     var gather = twiml.gather({numDigits: 4, action: '/gather'});
@@ -33,6 +37,9 @@ app.post('/pstn', function (request, response) {
     response.send(twiml.toString());
 });
 
+// This handles the action when the user enters the code. If the code is not
+// valid we return to the 'pstn' function where we ask for the user to enter it
+// again.
 app.post('/gather', function (request, response) {
     var twiml = new VoiceResponse();
 
@@ -47,6 +54,8 @@ app.post('/gather', function (request, response) {
     response.send(twiml.toString());
 });
 
+// This function just plays a cool song while the call is on the queue
+// waiting for the Tokbox SIP call to be created.
 app.post('/wait', function (request, response) {
     var twiml = new VoiceResponse();
 
@@ -56,6 +65,7 @@ app.post('/wait', function (request, response) {
     response.send(twiml.toString());
 });
 
+// This enqueues the current PSTN call while the Tokbox SIP call is created.
 app.post('/enqueue', function (request, response) {
     var twiml = new VoiceResponse();
 
@@ -65,6 +75,7 @@ app.post('/enqueue', function (request, response) {
     response.send(twiml.toString());
 });
 
+// This creates the Tokbox SIP call.
 wepow.callTwilio = function() {
     var token = opentok.generateToken(process.env.OPENTOK_SESSION_ID);
     var options = {
