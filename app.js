@@ -51,7 +51,7 @@ app.post('/wait', function (request, response) {
     var twiml = new VoiceResponse();
 
     twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
-    twiml.play('https://demo.twilio.com/docs/classic.mp3');
+    twiml.play({}, 'https://demo.twilio.com/docs/classic.mp3');
 
     response.type('text/xml');
     response.send(twiml.toString());
