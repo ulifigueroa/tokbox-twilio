@@ -16,7 +16,7 @@ app.get('/', function (request, response) {
 app.post('/sip', function (request, response) {
     var twiml = new VoiceResponse();
 
-    twiml.dial().queue({workflowSid: process.env.OPENTOK_SESSION_ID});
+    twiml.dial().queue({workflowSid: 'live_interview'});
 
     console.log('SIP called received.');
 
@@ -57,7 +57,7 @@ app.post('/enqueue', function (request, response) {
     var twiml = new VoiceResponse();
 
     twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
-    twiml.enqueue({workflowSid: process.env.OPENTOK_SESSION_ID});
+    twiml.enqueue({workflowSid: 'live_interview'});
 
     console.log('Adding call to the queue.');
 
