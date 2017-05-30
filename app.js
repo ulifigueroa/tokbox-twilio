@@ -18,6 +18,8 @@ app.post('/sip', function (request, response) {
 
     twiml.dial().queue({workflowSid: process.env.OPENTOK_SESSION_ID});
 
+    console.log('SIP called received.');
+
     response.type('text/xml');
     response.send(twiml.toString());
 });
@@ -29,12 +31,16 @@ app.post('/pstn', function (request, response) {
     gather.say({voice: 'alice'}, 'Welcome to your Live interview, please enter the four digits code.');
     //twiml.redirect('/pstn');
 
+    console.log('PSTN called received.');
+
     response.type('text/xml');
     response.send(twiml.toString());
 });
 
 app.post('/gather', function (request, response) {
     var twiml = new VoiceResponse();
+
+    console.log('Asking for the Live code.');
 
     if (request.body.Digits) {
         wepow.callTwilio();
@@ -53,6 +59,8 @@ app.post('/enqueue', function (request, response) {
     twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
     twiml.enqueue({workflowSid: process.env.OPENTOK_SESSION_ID});
 
+    console.log('Adding call to the queue.');
+
     response.type('text/xml');
     response.send(twiml.toString());
 });
@@ -69,7 +77,9 @@ wepow.callTwilio = function() {
 
     opentok.dial(process.env.OPENTOK_SESSION_ID, token, process.env.TWILIO_SIP_URI, options, function (error, sipCall) {
         if (error) {
-            console.error(error);
+            console.error('Error making Tokbox SIP call.', error);
+        } else {
+            console.log('Tokbox SIP call created successfully.');
         }
     });
 };
