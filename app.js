@@ -58,6 +58,7 @@ app.post('/gather', function (request, response) {
 });
 
 app.post('/wait', function (request, response) {
+    var twiml = new VoiceResponse();
     twiml.say({voice: 'alice'}, 'I\'m connecting you to the Live Interview, please wait a moment.');
 
     console.log('Playing wait text.')
