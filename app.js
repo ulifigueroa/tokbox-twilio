@@ -100,6 +100,7 @@ wepow.callTwilio = function() {
     opentok.dial(process.env.OPENTOK_SESSION_ID, token, process.env.TWILIO_SIP_URI, options, function (error, sipCall) {
         if (error) {
             console.error('Error making Tokbox SIP call.', error);
+            console.error('sipCall', sipCall);
         } else {
             console.log('Tokbox SIP call created successfully.');
         }
