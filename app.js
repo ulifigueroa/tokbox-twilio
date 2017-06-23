@@ -83,7 +83,7 @@ app.post('/enqueue', function (request, response) {
 
 // This creates the Tokbox SIP call.
 wepow.callTwilio = function() {
-    var token = opentok.generateToken(process.env.OPENTOK_SESSION_ID);
+    var token = opentok.generateToken(process.env.OPENTOK_SESSION_ID, {role: 'publisher', data: 'sip=true'});
     var options = {
             headers: {},
             auth: {
