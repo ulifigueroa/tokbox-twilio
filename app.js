@@ -92,15 +92,9 @@ wepow.callTwilio = function() {
             }
         };
 
-    console.log('options', options);
-    console.log('process.env.TWILIO_SIP_USER', process.env.TWILIO_SIP_USER);
-    console.log('process.env.TWILIO_SIP_PASSWORD', process.env.TWILIO_SIP_PASSWORD);
-    console.log('process.env.TWILIO_SIP_URI', process.env.TWILIO_SIP_URI);
-
     opentok.dial(process.env.OPENTOK_SESSION_ID, token, process.env.TWILIO_SIP_URI, options, function (error, sipCall) {
         if (error) {
             console.error('Error making Tokbox SIP call.', error);
-            console.error('sipCall', sipCall);
         } else {
             console.log('Tokbox SIP call created successfully.');
         }
