@@ -13,7 +13,7 @@ app.get('/', function (request, response) {
     response.send('It is working!');
 });
 
-app.get('/debug', function (request, response) {
+app.post('/debug', function (request, response) {
     console.log('Debugging Webhook.')
 
     console.log('request', request);
