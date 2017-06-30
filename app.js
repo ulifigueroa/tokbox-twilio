@@ -16,7 +16,7 @@ app.get('/', function (request, response) {
 app.post('/debug', function (request, response) {
     console.log('Debugging Webhook.')
 
-    console.log('request', request);
+    console.log('request.body', request.body);
 
     response.send(200);
 });
