@@ -13,6 +13,14 @@ app.get('/', function (request, response) {
     response.send('It is working!');
 });
 
+app.get('/debug', function (request, response) {
+    console.log('Debugging Webhook.')
+
+    console.log('request', request);
+
+    response.send(200);
+});
+
 // This handles the incoming Tokbox SIP call. What we need to do here is to
 // call to the queue to link the PSTN call and this incoming call.
 //
