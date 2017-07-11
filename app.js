@@ -43,7 +43,7 @@ app.post('/pstn', function (request, response) {
     var twiml = new VoiceResponse();
     var gather = twiml.gather({numDigits: 4, action: '/gather'});
 
-    gather.say({voice: 'alice', language: 'es-MX'}, 'Nos estamos conectando a tu entrevista en vivo. Esta entrevista será grabada. Al participar en esta entrevista estás aceptando los Términos de Servicio y Políticas de Privacidad de Wipaw.');
+    gather.say({voice: 'alice'}, 'Welcome to your interview, please enter the access code to join.');
     twiml.redirect('/pstn');
 
     response.type('text/xml');
